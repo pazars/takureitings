@@ -1,0 +1,10 @@
+[project]
+name = "takureitings"
+version = "0.1.0"
+description = "Latvijas taku skriešanas reitinga aprēķins"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.12.5",
+    "trafilatura>=2.0.0",
+]

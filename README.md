@@ -1,2 +1,3 @@
-# takureitings
-Taku skriešanas reitings 🇱🇻
+# Par projektu
+
+Mēģinājums izveidot Latvijas taku skriešanas reitingu.
