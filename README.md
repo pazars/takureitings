@@ -1,0 +1,2 @@
+# takureitings
+Taku skriešanas reitings 🇱🇻
