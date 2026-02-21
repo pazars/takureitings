@@ -1,0 +1,17 @@
+{
+    "stirnu_buks": [
+        {
+            "url": "https://www.stirnubuks.lv/race/.../results/?distance=[DISTANCE_NAME]",
+            "metadata": {
+                "year": 2000,
+                "name": "",
+                "location": "",
+                "event_no": 1,
+                "no_events_season": 6,
+                "distance_name": "Lūsis",
+                "distance_km": "",
+                "distance_km_actual": null
+            }
+        }
+    ]
+}
