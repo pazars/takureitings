@@ -9,6 +9,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 import xml.etree.ElementTree as ET
 import trafilatura as tt
+import pandas as pd
 
 
 class StirnuBuksResult(BaseModel):
@@ -257,6 +258,32 @@ def parse_stirnu_buks_races(races: list[dict]) -> list[StirnuBuks]:
         races_sb.append(race)
 
     return races_sb
+
+
+def parse_stirnu_buks_to_dataframes(races: list[dict]) -> tuple[pd.DataFrame, pd.DataFrame]:
+    races_rows = []
+    results_rows = []
+
+    races_sb = parse_stirnu_buks_races(races)
+
+    for race_id, sb in enumerate(races_sb):
+        # Race row (exclude results)
+        races_rows.append({
+            "race_id": race_id,
+            **sb.model_dump(exclude={"results"})
+        })
+
+        # Result rows
+        for result in sb.results:
+            results_rows.append({
+                "race_id": race_id,
+                **result.model_dump()
+            })
+
+    races_df = pd.DataFrame(races_rows).set_index("race_id")
+    results_df = pd.DataFrame(results_rows)
+
+    return races_df, results_df
 
 
 if __name__ == "__main__":

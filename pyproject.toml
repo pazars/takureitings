@@ -5,6 +5,7 @@ description = "Latvijas taku skriešanas reitinga aprēķins"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "pandas>=3.0.1",
     "pydantic>=2.12.5",
     "trafilatura>=2.0.0",
 ]
