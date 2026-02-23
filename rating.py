@@ -1,13 +1,19 @@
 import json
 import argparse
 import trueskill
+import constants
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from constants import RACES_FILE_PATH
 from models.stirnu_buks import parse_stirnu_buks_to_dataframes
 from collections import defaultdict
 from datetime import time
+
+
+RACES_FILE_PATH = constants.RACES_FILE_PATH
+BETA_MIN = constants.BETA_MIN
+BETA_BASE = constants.BETA_BASE
+GAP_MULTIPLIER = constants.GAP_MULTIPLIER
 
 
 def time_to_seconds(t: time) -> float:
@@ -25,7 +31,7 @@ def calculate_trueskill(
     year: int,
     distance_name: str,
 ) -> pd.DataFrame:
-    env = trueskill.TrueSkill(beta=4.167, draw_probability=0.0)
+    env = trueskill.TrueSkill(beta=BETA_BASE, draw_probability=0.0)
     ratings = defaultdict(lambda: env.create_rating())
     race_counts = defaultdict(int)
 
@@ -82,8 +88,6 @@ def calculate_pace_adjusted_trueskill(
     results_df: pd.DataFrame,
     year: int,
     distance_name: str,
-    beta_base: float = 4.167,
-    beta_min: float = 0.5,
 ) -> pd.DataFrame:
     env = trueskill.TrueSkill(draw_probability=0.0)
     ratings = defaultdict(lambda: env.create_rating())
@@ -121,7 +125,7 @@ def calculate_pace_adjusted_trueskill(
                 )
                 # Large normalized gap → low beta → decisive win
                 # Small normalized gap → beta near base → uncertain
-                dynamic_beta = max(beta_min, beta_base / (1 + gap_norm * 10))
+                dynamic_beta = max(BETA_MIN, BETA_BASE / (1 + gap_norm * GAP_MULTIPLIER))
                 env_dynamic = trueskill.TrueSkill(
                     beta=dynamic_beta, draw_probability=0.0
                 )
@@ -219,4 +223,4 @@ if __name__ == "__main__":
         args.distance,
     )
 
-    plot_leaderboard(leaderboard)
+    plot_leaderboard(leaderboard, sort_by="mu")
